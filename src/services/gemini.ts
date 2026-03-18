@@ -22,6 +22,43 @@ const normalizeText = (text: string) =>
 const tokenize = (text: string) =>
   normalizeText(text).split(" ").filter(Boolean);
 
+const getMyMemoryTranslation = async (word: string): Promise<string | null> => {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 4500);
+
+  try {
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(word)}&langpair=pl|en`;
+    const response = await fetch(url, {
+      method: "GET",
+      signal: controller.signal,
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    if (!response.ok) return null;
+
+    const data = (await response.json()) as {
+      responseData?: { translatedText?: string };
+    };
+
+    const translated = data?.responseData?.translatedText?.trim();
+    if (!translated) return null;
+
+    const cleaned = translated.replace(/[|\[\]{}<>]/g, "").trim();
+    if (!cleaned) return null;
+
+    // MyMemory can return identical text when translation is unavailable.
+    if (normalizeText(cleaned) === normalizeText(word)) return null;
+
+    return cleaned;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+};
+
 const getVocabularyEntry = (english: string) =>
   vocabulary.find(
     (entry) => normalizeText(entry.english) === normalizeText(english),
@@ -325,7 +362,12 @@ export async function translateWord(
     return partialMatch.english;
   }
 
-  return `Brak lokalnego tłumaczenia dla "${word}" w zdaniu "${context}".`;
+  const onlineTranslation = await getMyMemoryTranslation(word);
+  if (onlineTranslation) {
+    return onlineTranslation;
+  }
+
+  return `Brak tłumaczenia dla "${word}". Spróbuj ponownie za chwilę.`;
 }
 
 export async function getHint(
