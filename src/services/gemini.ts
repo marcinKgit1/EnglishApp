@@ -59,6 +59,49 @@ const getMyMemoryTranslation = async (word: string): Promise<string | null> => {
   }
 };
 
+const getLibreTranslateTranslation = async (
+  word: string,
+): Promise<string | null> => {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 4500);
+
+  try {
+    const response = await fetch("https://libretranslate.de/translate", {
+      method: "POST",
+      signal: controller.signal,
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        q: word,
+        source: "pl",
+        target: "en",
+        format: "text",
+      }),
+    });
+
+    if (!response.ok) return null;
+
+    const data = (await response.json()) as {
+      translatedText?: string;
+    };
+
+    const translated = data?.translatedText?.trim();
+    if (!translated) return null;
+
+    const cleaned = translated.replace(/[|\[\]{}<>]/g, "").trim();
+    if (!cleaned) return null;
+    if (normalizeText(cleaned) === normalizeText(word)) return null;
+
+    return cleaned;
+  } catch {
+    return null;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+};
+
 const getVocabularyEntry = (english: string) =>
   vocabulary.find(
     (entry) => normalizeText(entry.english) === normalizeText(english),
@@ -365,6 +408,11 @@ export async function translateWord(
   const onlineTranslation = await getMyMemoryTranslation(word);
   if (onlineTranslation) {
     return onlineTranslation;
+  }
+
+  const secondaryOnlineTranslation = await getLibreTranslateTranslation(word);
+  if (secondaryOnlineTranslation) {
+    return secondaryOnlineTranslation;
   }
 
   return `Brak tłumaczenia dla "${word}". Spróbuj ponownie za chwilę.`;
