@@ -1,74 +1,83 @@
 # EnglishTree
 
-Frontend do nauki angielskiego z drzewem umiejetnosci, baza slow i cwiczeniami opartymi o dane z Supabase.
+Aplikacja webowa do nauki angielskiego z drzewem umiejetnosci, treningiem tematow gramatycznych i baza slow.
+
+## Linki
+
+- Demo: https://marcinkgit1.github.io/EnglishApp/
+- Repo: https://github.com/marcinKgit1/EnglishApp
+
+## Najwazniejsze funkcje
+
+- Drzewo umiejetnosci (A1-C1/C2) pobierane z Supabase
+- Trening zdan dla konkretnego tematu
+- Baza slow i trening slowek
+- Lokalne podpowiedzi i lokalna walidacja odpowiedzi
+- Deploy na GitHub Pages przez GitHub Actions
+
+## Stack
+
+- React 19
+- TypeScript
+- Vite
+- Tailwind CSS
+- Supabase (read-only po stronie frontendu)
 
 ## Wymagania
 
-- Node.js 22.x dla CI i deployu na GitHub Pages
-- projekt Supabase z tabelami zdefiniowanymi w [supabase_schema.sql](supabase_schema.sql)
+- Node.js 22.x (zalecane)
+- Projekt Supabase z tabela i politykami z [supabase_schema.sql](supabase_schema.sql)
 
-## Konfiguracja lokalna
+## Szybki start lokalny
 
 1. Zainstaluj zaleznosci:
-   `npm install`
-2. Uzupelnij `.env` na podstawie `.env.example`:
-   - `VITE_SUPABASE_URL`
-   - `VITE_SUPABASE_ANON_KEY`
-   - `SUPABASE_SERVICE_ROLE_KEY` tylko do skryptow seed/migrate
-3. Uruchom aplikacje:
-   `npm run dev`
 
-## Supabase
+```bash
+npm install
+```
+
+2. Utworz `.env` na podstawie `.env.example` i uzupelnij:
+
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY` (tylko dla skryptow migrate/seed)
+
+3. Uruchom aplikacje:
+
+```bash
+npm run dev
+```
+
+## Supabase i bezpieczenstwo
 
 - Frontend korzysta tylko z publicznych zmiennych `VITE_SUPABASE_*`.
 - Skrypty [scripts/migrate.ts](scripts/migrate.ts) i [scripts/seed_more_sentences.ts](scripts/seed_more_sentences.ts) wymagaja `SUPABASE_SERVICE_ROLE_KEY`.
-- Nie udostepniaj `SUPABASE_SERVICE_ROLE_KEY` w GitHub Pages ani w frontendzie.
+- Nie udostepniaj `SUPABASE_SERVICE_ROLE_KEY` w frontendzie ani w sekretach GitHub Pages.
+- Po utworzeniu tabel uruchom [scripts/supabase_lockdown.sql](scripts/supabase_lockdown.sql), aby usunac niebezpieczne anon insert policies.
 
-## GitHub Pages
+## Komendy
 
-Workflow deployu jest w [.github/workflows/deploy-pages.yml](.github/workflows/deploy-pages.yml).
+```bash
+npm run lint
+npm run build
+npm run check:supabase
+npx tsx scripts/migrate.ts
+npx tsx scripts/seed_more_sentences.ts
+```
 
-Do sekretow repozytorium dodaj:
+## Deploy na GitHub Pages
+
+Workflow: [.github/workflows/deploy-pages.yml](.github/workflows/deploy-pages.yml)
+
+Wymagane sekrety repo:
 
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_ANON_KEY`
 
-Po pushu na `main` lub `master` GitHub zbuduje aplikacje i opublikuje katalog `dist` na GitHub Pages.
+Automatyzacja publikacji lokalnej:
 
-## Komendy pomocnicze
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/publish_github_pages.ps1 -RemoteUrl https://github.com/OWNER/REPO.git
+```
 
-- `npm run lint`
-- `npm run build`
-- `npx tsx scripts/check.ts`
-- `npx tsx scripts/migrate.ts`
-- `npx tsx scripts/seed_more_sentences.ts`
-
-## Publikacja nowego repo krok po kroku
-
-### 1) Supabase
-
-1. W SQL Editor uruchom [supabase_schema.sql](supabase_schema.sql).
-2. W SQL Editor uruchom [scripts/supabase_lockdown.sql](scripts/supabase_lockdown.sql).
-3. Lokalnie uzupelnij `.env` i uruchom:
-   - `npx tsx scripts/migrate.ts`
-   - `npx tsx scripts/seed_more_sentences.ts`
-   - `npx tsx scripts/check.ts`
-
-### 2) GitHub repo
-
-1. Utworz puste repo w GitHub.
-2. Uruchom automatyzacje publikacji:
-   - `powershell -ExecutionPolicy Bypass -File scripts/publish_github_pages.ps1 -RemoteUrl https://github.com/OWNER/REPO.git`
-3. W repo dodaj sekrety:
-   - `VITE_SUPABASE_URL`
-   - `VITE_SUPABASE_ANON_KEY`
-4. W Settings -> Pages ustaw Source na GitHub Actions.
-
-### 3) Weryfikacja po deployu
-
-1. Sprawdz zakladke Actions: workflow [ .github/workflows/deploy-pages.yml ](.github/workflows/deploy-pages.yml) powinien byc zielony.
-2. Otworz URL GitHub Pages i przejdz do:
-   - Drzewo umiejetnosci
-   - Trening tematyczny
-   - Baza slow i trening slow
-3. Jesli nie laduje danych, sprawdz sekrety i RLS w Supabase.
+Po pushu na `main` workflow buduje aplikacje i publikuje `dist` na GitHub Pages.
