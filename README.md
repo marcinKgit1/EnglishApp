@@ -2,9 +2,9 @@
 
 ## O projekcie
 
-To moja autorska aplikacja do nauki języka angielskiego. Przed rozpoczęciem prac przetestowałem wiele podobnych narzędzi jako użytkownik i zauważyłem powtarzający się problem: wielu uczących się zatrzymuje się na poziomie tzw. wiecznego początkującego.
+EnglishApp to aplikacja webowa do nauki języka angielskiego, zaprojektowana tak, aby pomóc wyjść z poziomu tzw. wiecznego początkującego. Łączy naukę gramatyki i słownictwa w jednym przepływie i prowadzi użytkownika przez poziomy A1-C1/C2.
 
-EnglishApp ma pomóc ten problem przełamać. Łączy naukę gramatyki i słownictwa w jednej aplikacji, prowadząc użytkownika przez poziomy A1-C1/C2. Dane edukacyjne są pobierane z Supabase, a aplikacja publikowana na GitHub Pages.
+Treści edukacyjne są pobierane z Supabase, a aplikacja jest publikowana na GitHub Pages.
 
 Linki:
 
@@ -13,7 +13,7 @@ Linki:
 
 ## Założenia i podejście
 
-Projekt powstał w oparciu o realne doświadczenia z używania innych aplikacji. Celem było stworzenie narzędzia, które wspiera aktywne używanie języka, a nie tylko bierne przyswajanie materiału.
+Projekt powstał na bazie realnych doświadczeń z nauką języka i testowania podobnych narzędzi. Priorytetem było aktywne używanie języka, a nie bierne przyswajanie materiału.
 
 - Nauka słów odbywa się w kontekście zdań.
 - Ćwiczenia rozwijają umiejętność budowania wypowiedzi.
@@ -37,46 +37,35 @@ Projekt powstał w oparciu o realne doświadczenia z używania innych aplikacji.
 - Tailwind CSS
 - Supabase
 
-## Wymagania
+## Szybki start
 
 - Node.js 22.x (zalecane)
-- Projekt Supabase z tabelami i politykami z [supabase_schema.sql](supabase_schema.sql)
 
-## Instalacja i uruchomienie
-
-1. Sklonuj repozytorium:
-
-```bash
-git clone https://github.com/marcinKgit1/EnglishApp.git
-cd EnglishApp
-```
-
-2. Zainstaluj zależności:
+1. Zainstaluj zależności:
 
 ```bash
 npm install
 ```
 
-3. Utwórz plik .env na podstawie .env.example i ustaw:
+2. Utwórz plik .env na podstawie .env.example i ustaw:
 
 - VITE_SUPABASE_URL
 - VITE_SUPABASE_ANON_KEY
 - SUPABASE_SERVICE_ROLE_KEY (tylko dla skryptów migrate/seed)
 
-4. Uruchom aplikację:
+3. Uruchom aplikację:
 
 ```bash
 npm run dev
 ```
 
-## Supabase i bezpieczeństwo
+## Konfiguracja Supabase
 
+- Uruchom [supabase_schema.sql](supabase_schema.sql), aby utworzyć tabele.
+- Uruchom [scripts/supabase_lockdown.sql](scripts/supabase_lockdown.sql), aby usunąć niebezpieczne anon insert policies.
 - Frontend korzysta wyłącznie z publicznych zmiennych VITE_SUPABASE_*.
-- Skrypty [scripts/migrate.ts](scripts/migrate.ts) i [scripts/seed_more_sentences.ts](scripts/seed_more_sentences.ts) wymagają SUPABASE_SERVICE_ROLE_KEY.
-- Nie udostępniaj SUPABASE_SERVICE_ROLE_KEY w frontendzie ani w sekretach GitHub Pages.
-- Po utworzeniu tabel uruchom [scripts/supabase_lockdown.sql](scripts/supabase_lockdown.sql), aby usunąć niebezpieczne anon insert policies.
 
-## Dostępne komendy
+## Komendy
 
 ```bash
 npm run lint
@@ -102,7 +91,3 @@ powershell -ExecutionPolicy Bypass -File scripts/publish_github_pages.ps1 -Remot
 ```
 
 Po pushu na main workflow buduje aplikację i publikuje katalog dist na GitHub Pages.
-
-## Licencja
-
-Projekt jest udostępniany na licencji MIT.
