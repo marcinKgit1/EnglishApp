@@ -11,7 +11,7 @@ Aplikacja webowa do nauki angielskiego z drzewem umiejętności, treningiem tema
 
 - Drzewo umiejętności (A1-C1/C2) pobierane z Supabase
 - Trening zdań dla konkretnego tematu
-- Baza s��ów i trening słówek
+- Baza słów i trening słówek
 - Lokalne podpowiedzi i lokalna walidacja odpowiedzi
 - Deploy na GitHub Pages przez GitHub Actions
 
