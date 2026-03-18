@@ -1,0 +1,11 @@
+Kopia zapasowa (Snapshot) - Wersja App1
+Data: 18 marca 2026
+
+Aplikacja w tej wersji opiera się na:
+1. Statycznej bazie danych w pliku src/data/sentences.ts
+2. Strukturze drzewka w pliku src/data/learningPath.ts
+3. Ocenie odpowiedzi przez AI (Gemini) w pliku src/services/gemini.ts (funkcja explainError)
+4. Lokalnym sprawdzaniu poprawności w SentencePracticeCard.tsx
+
+Środowisko AI Studio automatycznie zapisuje historię wszystkich zmian. 
+Jeśli w trakcie migracji na Supabase coś pójdzie nie tak, zawsze możemy poprosić asystenta o "przywrócenie kodu do stanu z wersji App1" lub skorzystać z historii czatu, aby cofnąć zmiany.
