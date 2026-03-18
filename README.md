@@ -1,17 +1,17 @@
 # EnglishTree
 
-Aplikacja webowa do nauki angielskiego z drzewem umiejetnosci, treningiem tematow gramatycznych i baza slow.
+Aplikacja webowa do nauki angielskiego z drzewem umiejętności, treningiem tematów gramatycznych i bazą słów.
 
 ## Linki
 
 - Demo: https://marcinkgit1.github.io/EnglishApp/
 - Repo: https://github.com/marcinKgit1/EnglishApp
 
-## Najwazniejsze funkcje
+## Najważniejsze funkcje
 
-- Drzewo umiejetnosci (A1-C1/C2) pobierane z Supabase
-- Trening zdan dla konkretnego tematu
-- Baza slow i trening slowek
+- Drzewo umiejętności (A1-C1/C2) pobierane z Supabase
+- Trening zdań dla konkretnego tematu
+- Baza s��ów i trening słówek
 - Lokalne podpowiedzi i lokalna walidacja odpowiedzi
 - Deploy na GitHub Pages przez GitHub Actions
 
@@ -26,34 +26,34 @@ Aplikacja webowa do nauki angielskiego z drzewem umiejetnosci, treningiem temato
 ## Wymagania
 
 - Node.js 22.x (zalecane)
-- Projekt Supabase z tabela i politykami z [supabase_schema.sql](supabase_schema.sql)
+- Projekt Supabase z tabelą i politykami z [supabase_schema.sql](supabase_schema.sql)
 
 ## Szybki start lokalny
 
-1. Zainstaluj zaleznosci:
+1. Zainstaluj zależności:
 
 ```bash
 npm install
 ```
 
-2. Utworz `.env` na podstawie `.env.example` i uzupelnij:
+2. Utwórz `.env` na podstawie `.env.example` i uzupełnij:
 
 - `VITE_SUPABASE_URL`
 - `VITE_SUPABASE_ANON_KEY`
-- `SUPABASE_SERVICE_ROLE_KEY` (tylko dla skryptow migrate/seed)
+- `SUPABASE_SERVICE_ROLE_KEY` (tylko dla skryptów migrate/seed)
 
-3. Uruchom aplikacje:
+3. Uruchom aplikację:
 
 ```bash
 npm run dev
 ```
 
-## Supabase i bezpieczenstwo
+## Supabase i bezpieczeństwo
 
 - Frontend korzysta tylko z publicznych zmiennych `VITE_SUPABASE_*`.
-- Skrypty [scripts/migrate.ts](scripts/migrate.ts) i [scripts/seed_more_sentences.ts](scripts/seed_more_sentences.ts) wymagaja `SUPABASE_SERVICE_ROLE_KEY`.
-- Nie udostepniaj `SUPABASE_SERVICE_ROLE_KEY` w frontendzie ani w sekretach GitHub Pages.
-- Po utworzeniu tabel uruchom [scripts/supabase_lockdown.sql](scripts/supabase_lockdown.sql), aby usunac niebezpieczne anon insert policies.
+- Skrypty [scripts/migrate.ts](scripts/migrate.ts) i [scripts/seed_more_sentences.ts](scripts/seed_more_sentences.ts) wymagają `SUPABASE_SERVICE_ROLE_KEY`.
+- Nie udostępniaj `SUPABASE_SERVICE_ROLE_KEY` w frontendzie ani w sekretach GitHub Pages.
+- Po utworzeniu tabel uruchom [scripts/supabase_lockdown.sql](scripts/supabase_lockdown.sql), aby usunąć niebezpieczne anon insert policies.
 
 ## Komendy
 
@@ -80,4 +80,4 @@ Automatyzacja publikacji lokalnej:
 powershell -ExecutionPolicy Bypass -File scripts/publish_github_pages.ps1 -RemoteUrl https://github.com/OWNER/REPO.git
 ```
 
-Po pushu na `main` workflow buduje aplikacje i publikuje `dist` na GitHub Pages.
+Po pushu na `main` workflow buduje aplikację i publikuje `dist` na GitHub Pages.
